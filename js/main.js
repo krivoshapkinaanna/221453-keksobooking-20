@@ -90,14 +90,13 @@ var renderPins = function () {
 renderPins();
 
 
-// Отрисовка карточки, не разобралась с преимуществами.
+// Отрисовка карточки
 var card = document.querySelector('#card').content.querySelector('.map__card');
 var renderCard = function (ad) {
   var mapCardElement = card.cloneNode(true);
   var popupPhoto = mapCardElement.querySelector('.popup__photo');
   var popupPhotos = mapCardElement.querySelector('.popup__photos');
-  // var popupFeature = mapCardElement.querySelector('.popup-feature');
-  // var popupFeatures = mapCardElement.querySelector('.popup-features');
+  var popupFeatures = mapCardElement.querySelector('.popup__features');
   mapCardElement.querySelector('.popup__title').textContent = ad.offer.title;
   mapCardElement.querySelector('.popup__text--address').textContent = ad.offer.address;
   mapCardElement.querySelector('.popup__text--price').textContent = ad.offer.price + ' ₽/ночь';
@@ -107,25 +106,26 @@ var renderCard = function (ad) {
   mapCardElement.querySelector('.popup__description').textContent = ad.offer.description;
   mapCardElement.querySelector('.popup__avatar').src = ad.author.avatar;
 
+  // Удаляем лишний элемент и подставляем массив в фото
   popupPhotos.removeChild(popupPhoto);
   for (var i = 0; i < ad.offer.photos.length; i++) {
     var photo = popupPhoto.cloneNode(true);
     photo.src = ad.offer.photos[i];
     popupPhotos.appendChild(photo);
   }
-  /*
+  // Удаляем лишние элементы и подставляем массив в преимущества
   var fragment = new DocumentFragment();
-  for (var j = 0; j < ad.offer.features.length; j++) {
+  for (i = 0; i < ad.offer.features.length; i++) {
     var li = document.createElement('li');
     li.classList.add('popup__feature');
-    li.classList.add('popup__feature--' + FEATURES[j]);
+    li.classList.add('popup__feature--' + FEATURES[i]);
     fragment.appendChild(li);
   }
   while (popupFeatures.firstElementChild) {
     popupFeatures.firstElementChild.remove();
   }
   popupFeatures.appendChild(fragment);
-*/
+
   mapPins.after(mapCardElement);
 };
-renderCard(ads[5]);
+renderCard(ads[1]);
