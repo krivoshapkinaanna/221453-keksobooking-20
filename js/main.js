@@ -4,6 +4,8 @@ var TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var TIMES = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
+var map = document.querySelector('.map');
+
 // Функция для получения целого случайного числа включительно
 var getRandom = function (min, max) {
   return Math.floor(min + Math.random() * (max + 1 - min));
@@ -15,7 +17,7 @@ var getRandomArray = function (array) {
 
 // Функция создания свойств карточки объявления
 var generateAd = function (index) {
-  var map = document.querySelector('.map').getBoundingClientRect();
+  map.getBoundingClientRect();
   var location = {
     x: map.left + getRandom(0, map.width),
     y: getRandom(130, 630),
@@ -45,16 +47,12 @@ var generateAd = function (index) {
 // Функция для создания массива карточек
 var generateAds = function () {
   var ads = [];
-  for (var i = 0; i < 8; i++) {
+  for (i = 0; i < 8; i++) {
     ads.push(generateAd(i + 1));
   }
   return ads;
 };
 var ads = generateAds();
-
-// Переводит карту в активный режим
-var map = document.querySelector('.map');
-map.classList.remove('map--faded');
 
 // Клонирование шаблона для метки
 var mapPins = document.querySelector('.map__pins');
@@ -73,10 +71,44 @@ var renderPin = function (ad) {
 // Отрисовка всех меток на карте
 var renderPins = function () {
   var fragment = document.createDocumentFragment();
-  for (var i = 0; i < 8; i++) {
+  for (i = 0; i < 8; i++) {
     fragment.appendChild(renderPin(ads[i]));
   }
   mapPins.appendChild(fragment);
 };
-renderPins();
+
+// Перевод форм в неактивный режим
+var adForm = document.querySelector('.ad-form');
+var fieldsets = adForm.querySelectorAll('fieldset');
+for (var i = 0; i < fieldsets.length; i++) {
+  fieldsets[i].setAttribute('disabled', true);
+}
+var mapFilters = document.querySelector('.map__filters');
+mapFilters.setAttribute('disabled', true);
+
+// Добавлен обработчик на левую кнопку мыши, активирует карту и все формы
+var mapPinMain = document.querySelector('.map__pin--main');
+// Функция активации карты
+var activateMap = function () {
+  map.classList.remove('map--faded');
+  adForm.classList.remove('ad-form--disabled');
+  for (i = 0; i < fieldsets.length; i++) {
+    fieldsets[i].removeAttribute('disabled');
+  }
+  mapFilters.removeAttribute('disabled');
+  renderPins();
+};
+
+// Обработчик нажатия левой клавиши мыши
+mapPinMain.addEventListener('mousedown', function (evt) {
+  if (evt.button === 0) {
+    activateMap();
+  }
+});
+// Обработчик нажатия Enter
+mapPinMain.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Enter') {
+    activateMap();
+  }
+});
 
