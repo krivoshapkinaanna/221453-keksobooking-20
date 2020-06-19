@@ -1,8 +1,18 @@
 'use strict';
 
-var TYPES = ['palace', 'flat', 'house', 'bungalo'];
+var TYPES_TRANSCRIPTION = {
+  palace: 'Дворец',
+  flat: 'Квартира',
+  house: 'Дом',
+  bungalo: 'Бунгало'
+};
+var TYPES = [TYPES_TRANSCRIPTION.palace, TYPES_TRANSCRIPTION.flat, TYPES_TRANSCRIPTION.house, TYPES_TRANSCRIPTION.bungalo];
 var TIMES = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+// var MIN_TITLE_LENGTH = 30;
+// var MAX_TITLE_LENGTH = 100;
+
 
 var map = document.querySelector('.map');
 
@@ -38,7 +48,7 @@ var generateAd = function (index) {
       checkout: TIMES[getRandom(0, TIMES.length - 1)],
       features: getRandomArray(FEATURES),
       description: 'Описание',
-      photos: 'http://o0.github.io/assets/images/tokyo/hotel' + getRandom(1, 3) + 'jpg',
+      photos: getRandomArray(PHOTOS),
     },
     location: location
   }; return ad;
@@ -77,6 +87,48 @@ var renderPins = function () {
   mapPins.appendChild(fragment);
 };
 
+/*
+// Отрисовка карточки
+var card = document.querySelector('#card').content.querySelector('.map__card');
+var renderCard = function (ad) {
+  var mapCardElement = card.cloneNode(true);
+  var popupPhoto = mapCardElement.querySelector('.popup__photo');
+  var popupPhotos = mapCardElement.querySelector('.popup__photos');
+  var popupFeatures = mapCardElement.querySelector('.popup__features');
+  mapCardElement.querySelector('.popup__title').textContent = ad.offer.title;
+  mapCardElement.querySelector('.popup__text--address').textContent = ad.offer.address;
+  mapCardElement.querySelector('.popup__text--price').textContent = ad.offer.price + ' ₽/ночь';
+  mapCardElement.querySelector('.popup__type').textContent = ad.offer.type;
+  mapCardElement.querySelector('.popup__text--capacity').textContent = ad.offer.room + ' комнаты для ' + ad.offer.guests + ' гостей';
+  mapCardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
+  mapCardElement.querySelector('.popup__description').textContent = ad.offer.description;
+  mapCardElement.querySelector('.popup__avatar').src = ad.author.avatar;
+
+  // Удаляем лишний элемент и подставляем массив в фото
+  popupPhotos.removeChild(popupPhoto);
+  for (var i = 0; i < ad.offer.photos.length; i++) {
+    var photo = popupPhoto.cloneNode(true);
+    photo.src = ad.offer.photos[i];
+    popupPhotos.appendChild(photo);
+  }
+  // Удаляем лишние элементы и подставляем массив в преимущества
+  var fragment = new DocumentFragment();
+  for (i = 0; i < ad.offer.features.length; i++) {
+    var li = document.createElement('li');
+    li.classList.add('popup__feature');
+    li.classList.add('popup__feature--' + FEATURES[i]);
+    fragment.appendChild(li);
+  }
+  while (popupFeatures.firstElementChild) {
+    popupFeatures.firstElementChild.remove();
+  }
+  popupFeatures.appendChild(fragment);
+
+  mapPins.after(mapCardElement);
+};
+renderCard(ads[1]);
+*/
+
 // Перевод форм в неактивный режим
 var adForm = document.querySelector('.ad-form');
 var fieldsets = adForm.querySelectorAll('fieldset');
@@ -109,6 +161,21 @@ mapPinMain.addEventListener('mousedown', function (evt) {
 mapPinMain.addEventListener('keydown', function (evt) {
   if (evt.key === 'Enter') {
     activateMap();
+  }
+});
+
+// Добавлена валидация на поле заголовка
+var titleInput = document.querySelector('#title');
+titleInput.addEventListener('invalid', function () {
+  // var valueLength = titleInput.value.length;
+  if (titleInput.validity.tooShort) {
+    titleInput.setCustomValidity('Заголовок должен состоять минимум из 30 символов');
+  } else if (titleInput.validity.tooLong) {
+    titleInput.setCustomValidity('Заголовок не должен превышать 100 символов');
+  } else if (titleInput.validity.valueMissing) {
+    titleInput.setCustomValidity('Обязательное поле');
+  } else {
+    titleInput.setCustomValidity('');
   }
 });
 
