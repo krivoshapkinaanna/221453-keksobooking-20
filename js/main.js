@@ -179,3 +179,23 @@ titleInput.addEventListener('invalid', function () {
   }
 });
 
+
+/* (Валидация цены - пока не поняла, как сделать)
+var priceInput = document.querySelector('#price');
+var typeSelect = document.querySelector('#type');
+typeSelect.addEventListener('change', function () {
+  if (typeSelect.value === 'bungalo') {
+    priceInput.min = '0';
+    priceInput.placeholder.textContent = '0';
+  } else if (typeSelect.value === 'flat') {
+    priceInput.min = '1000';
+    priceInput.placeholder.textContent = '1000';
+  } else if (typeSelect.value === 'house') {
+    priceInput.min = '5000';
+    priceInput.placeholder.textContent = '5000';
+  } else if (typeSelect.value === 'palace') {
+    priceInput.min = '10000';
+    priceInput.placeholder.textContent = '10000';
+  }
+});
+*/
