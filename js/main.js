@@ -12,7 +12,10 @@ var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditio
 var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 // var MIN_TITLE_LENGTH = 30;
 // var MAX_TITLE_LENGTH = 100;
-
+// Разобраться, как применить размеры меток ниже
+var FULL_MAP_PIN_HEIGHT = 80;
+var MAP_PIN_HEIGHT = 62;
+var MAP_PIN_WIDTH = 62;
 
 var map = document.querySelector('.map');
 
@@ -27,12 +30,12 @@ var getRandomArray = function (array) {
 
 // Функция создания свойств карточки объявления
 var generateAd = function (index) {
-  map.getBoundingClientRect();
+  var area = map.getBoundingClientRect();
   var location = {
-    x: map.left + getRandom(0, map.width),
+    x: area.left + getRandom(0, area.width),
     y: getRandom(130, 630),
   };
-  var ad = {
+  return {
     author: {
       avatar: 'img/avatars/user0' + index + '.png',
       alt: 'Аватар пользователя',
@@ -51,7 +54,7 @@ var generateAd = function (index) {
       photos: getRandomArray(PHOTOS),
     },
     location: location
-  }; return ad;
+  };
 };
 
 // Функция для создания массива карточек
@@ -71,8 +74,8 @@ var pin = document.querySelector('#pin').content;
 // Функция создания метки по шаблону
 var renderPin = function (ad) {
   var mapElement = pin.cloneNode(true);
-  mapElement.querySelector('.map__pin').style.left = ad.location.x + 'px';
-  mapElement.querySelector('.map__pin').style.top = ad.location.y + 'px';
+  mapElement.querySelector('.map__pin').style.left = ad.location.x - MAP_PIN_WIDTH / 2 + 'px'; // так ли указывать ширину метки?
+  mapElement.querySelector('.map__pin').style.top = ad.location.y - FULL_MAP_PIN_HEIGHT + 'px'; // так ли указывать высоту метки?
   mapElement.querySelector('.map__pin img').src = ad.author.avatar;
   mapElement.querySelector('.map__pin img').alt = ad.offer.title;
   return mapElement;
@@ -138,8 +141,11 @@ for (var i = 0; i < fieldsets.length; i++) {
 var mapFilters = document.querySelector('.map__filters');
 mapFilters.setAttribute('disabled', true);
 
+
 // Добавлен обработчик на левую кнопку мыши, активирует карту и все формы
 var mapPinMain = document.querySelector('.map__pin--main');
+document.querySelector('#address').value = parseInt(mapPinMain.style.left, 10) + MAP_PIN_WIDTH / 2 + ', ' + parseInt(mapPinMain.style.top, 10) + FULL_MAP_PIN_HEIGHT / 2; // Не понимаю, почему не работает уточнение метки по высоте
+
 // Функция активации карты
 var activateMap = function () {
   map.classList.remove('map--faded');
@@ -148,6 +154,8 @@ var activateMap = function () {
     fieldsets[i].removeAttribute('disabled');
   }
   mapFilters.removeAttribute('disabled');
+  document.querySelector('#address').value = parseInt(mapPinMain.style.left, 10) + MAP_PIN_WIDTH / 2 + ', ' + parseInt(mapPinMain.style.top, 10) + MAP_PIN_HEIGHT; // Не понимаю, почему не работает уточнение метки по высоте
+
   renderPins();
 };
 
@@ -155,7 +163,8 @@ var activateMap = function () {
 mapPinMain.addEventListener('mousedown', function (evt) {
   if (evt.button === 0) {
     activateMap();
-    var startCoords = {
+    // Перемещение метки (доработать смену адреса при движении)
+    /* var startCoords = {
       x: evt.clientX,
       y: evt.clientY
     };
@@ -172,8 +181,9 @@ mapPinMain.addEventListener('mousedown', function (evt) {
         y: moveEvt.clientY
       };
 
-      mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
       mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
+      mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
+      // address.value = parseInt(mapPinMain.style.left) + ', ' + parseInt(mapPinMain.style.top);
     };
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
@@ -183,7 +193,7 @@ mapPinMain.addEventListener('mousedown', function (evt) {
     };
 
     document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
+    document.addEventListener('mouseup', onMouseUp); */
   }
 });
 
@@ -196,8 +206,7 @@ mapPinMain.addEventListener('keydown', function (evt) {
 
 // Добавлена валидация на поле заголовка
 var titleInput = document.querySelector('#title');
-titleInput.addEventListener('invalid', function () {
-  // var valueLength = titleInput.value.length;
+var validateTitle = function () {
   if (titleInput.validity.tooShort) {
     titleInput.setCustomValidity('Заголовок должен состоять минимум из 30 символов');
   } else if (titleInput.validity.tooLong) {
@@ -207,25 +216,70 @@ titleInput.addEventListener('invalid', function () {
   } else {
     titleInput.setCustomValidity('');
   }
+};
+titleInput.addEventListener('change', function () {
+  validateTitle();
 });
 
-
-/* (Валидация цены - пока не поняла, как сделать)
+// Валидация цены
 var priceInput = document.querySelector('#price');
 var typeSelect = document.querySelector('#type');
-typeSelect.addEventListener('change', function () {
+var validatePrice = function () {
   if (typeSelect.value === 'bungalo') {
     priceInput.min = '0';
-    priceInput.placeholder.textContent = '0';
+    priceInput.placeholder = '0';
   } else if (typeSelect.value === 'flat') {
     priceInput.min = '1000';
-    priceInput.placeholder.textContent = '1000';
+    priceInput.placeholder = '1000';
   } else if (typeSelect.value === 'house') {
     priceInput.min = '5000';
-    priceInput.placeholder.textContent = '5000';
+    priceInput.placeholder = '5000';
   } else if (typeSelect.value === 'palace') {
     priceInput.min = '10000';
-    priceInput.placeholder.textContent = '10000';
+    priceInput.placeholder = '10000';
   }
+};
+priceInput.addEventListener('change', function () {
+  validatePrice();
 });
-*/
+typeSelect.addEventListener('change', function () {
+  validatePrice();
+});
+
+// Валидация комнат-гостей
+var roomNumberInput = document.querySelector('#room_number');
+var capacityInput = document.querySelector('#capacity');
+var validateCapacity = function () {
+  roomNumberInput.setCustomValidity('');
+  capacityInput.setCustomValidity('');
+  var rooms = roomNumberInput.value;
+  var capacity = capacityInput.value;
+  if (rooms < capacity) {
+    roomNumberInput.setCustomValidity('Нужно больше комнат');
+    roomNumberInput.reportValidity();
+  } else if (rooms === '100' && capacity !== '0') {
+    roomNumberInput.setCustomValidity('Не для гостей'); // Почему реагирует только на 1гостя, если больше гостей - сообщает "нужно больше комнат"
+    roomNumberInput.reportValidity();
+  } else if (rooms !== '100' && capacity === '0') {
+    capacityInput.setCustomValidity('Нужно больше гостей');
+    capacityInput.reportValidity();
+  }
+};
+roomNumberInput.addEventListener('change', function () {
+  validateCapacity();
+});
+capacityInput.addEventListener('change', function () {
+  validateCapacity();
+});
+
+// Отправка формы, если валидация пройдена
+adForm.addEventListener('submit', function (evt) {
+  evt.preventDefault();
+  validateCapacity(evt);
+  validateTitle(evt);
+  validatePrice(evt);
+  if (adForm.checkValidity()) {
+    adForm.submit();
+  }
+}
+);
