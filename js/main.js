@@ -10,10 +10,7 @@ var TYPES = [TYPES_TRANSCRIPTION.palace, TYPES_TRANSCRIPTION.flat, TYPES_TRANSCR
 var TIMES = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
-// var MIN_TITLE_LENGTH = 30;
-// var MAX_TITLE_LENGTH = 100;
-// Разобраться, как применить размеры меток ниже
-var FULL_MAP_PIN_HEIGHT = 80;
+var FULL_MAP_PIN_HEIGHT = 80; // высотка метки с указателем
 var MAP_PIN_HEIGHT = 62;
 var MAP_PIN_WIDTH = 62;
 
@@ -74,8 +71,8 @@ var pin = document.querySelector('#pin').content;
 // Функция создания метки по шаблону
 var renderPin = function (ad) {
   var mapElement = pin.cloneNode(true);
-  mapElement.querySelector('.map__pin').style.left = ad.location.x - MAP_PIN_WIDTH / 2 + 'px'; // так ли указывать ширину метки?
-  mapElement.querySelector('.map__pin').style.top = ad.location.y - FULL_MAP_PIN_HEIGHT + 'px'; // так ли указывать высоту метки?
+  mapElement.querySelector('.map__pin').style.left = ad.location.x - MAP_PIN_WIDTH / 2 + 'px';
+  mapElement.querySelector('.map__pin').style.top = ad.location.y - FULL_MAP_PIN_HEIGHT + 'px';
   mapElement.querySelector('.map__pin img').src = ad.author.avatar;
   mapElement.querySelector('.map__pin img').alt = ad.offer.title;
   return mapElement;
@@ -144,7 +141,7 @@ mapFilters.setAttribute('disabled', true);
 
 // Добавлен обработчик на левую кнопку мыши, активирует карту и все формы
 var mapPinMain = document.querySelector('.map__pin--main');
-document.querySelector('#address').value = parseInt(mapPinMain.style.left, 10) + MAP_PIN_WIDTH / 2 + ', ' + parseInt(mapPinMain.style.top, 10) + FULL_MAP_PIN_HEIGHT / 2; // Не понимаю, почему не работает уточнение метки по высоте
+document.querySelector('#address').value = (parseInt(mapPinMain.style.left, 10) + MAP_PIN_WIDTH / 2) + ', ' + (parseInt(mapPinMain.style.top, 10) + FULL_MAP_PIN_HEIGHT / 2); // Не понимаю, почему не работает уточнение метки по высоте
 
 // Функция активации карты
 var activateMap = function () {
@@ -154,7 +151,7 @@ var activateMap = function () {
     fieldsets[i].removeAttribute('disabled');
   }
   mapFilters.removeAttribute('disabled');
-  document.querySelector('#address').value = parseInt(mapPinMain.style.left, 10) + MAP_PIN_WIDTH / 2 + ', ' + parseInt(mapPinMain.style.top, 10) + MAP_PIN_HEIGHT; // Не понимаю, почему не работает уточнение метки по высоте
+  document.querySelector('#address').value = (parseInt(mapPinMain.style.left, 10) + MAP_PIN_WIDTH / 2) + ', ' + (parseInt(mapPinMain.style.top, 10) + MAP_PIN_HEIGHT); // Не понимаю, почему не работает уточнение метки по высоте
 
   renderPins();
 };
@@ -254,11 +251,11 @@ var validateCapacity = function () {
   capacityInput.setCustomValidity('');
   var rooms = roomNumberInput.value;
   var capacity = capacityInput.value;
-  if (rooms < capacity) {
-    roomNumberInput.setCustomValidity('Нужно больше комнат');
+  if (rooms === '100' && capacity !== '0') {
+    roomNumberInput.setCustomValidity('Не для гостей');
     roomNumberInput.reportValidity();
-  } else if (rooms === '100' && capacity !== '0') {
-    roomNumberInput.setCustomValidity('Не для гостей'); // Почему реагирует только на 1гостя, если больше гостей - сообщает "нужно больше комнат"
+  } else if (rooms < capacity) {
+    roomNumberInput.setCustomValidity('Нужно больше комнат');
     roomNumberInput.reportValidity();
   } else if (rooms !== '100' && capacity === '0') {
     capacityInput.setCustomValidity('Нужно больше гостей');
