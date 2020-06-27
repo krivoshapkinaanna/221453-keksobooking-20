@@ -16,12 +16,11 @@
       };
       var onMouseMove = function (moveEvt) {
         moveEvt.preventDefault();
-
         var shift = {
           x: startCoords.x - moveEvt.clientX,
           y: startCoords.y - moveEvt.clientY
         };
-        document.querySelector('#address').value = locationX + ', ' + activLocationY;
+
         startCoords = {
           x: moveEvt.clientX,
           y: moveEvt.clientY
@@ -48,10 +47,11 @@
             mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
           }
         }
-
+        document.querySelector('#address').value = (parseInt(mapPinMain.style.left, 10) + window.data.MAP_PIN_WIDTH / 2) + ', ' + (parseInt(mapPinMain.style.top, 10) + window.data.FULL_MAP_PIN_HEIGHT); // Почему не определяется через заявленные переменные?
       };
       var onMouseUp = function (upEvt) {
         upEvt.preventDefault();
+        document.querySelector('#address').value = (parseInt(mapPinMain.style.left, 10) + window.data.MAP_PIN_WIDTH / 2) + ', ' + (parseInt(mapPinMain.style.top, 10) + window.data.FULL_MAP_PIN_HEIGHT); // Почему не определяется через заявленные переменные?
         document.removeEventListener('mousemove', onMouseMove);
         document.removeEventListener('mouseup', onMouseUp);
       };
@@ -59,7 +59,7 @@
       document.addEventListener('mouseup', onMouseUp);
     }
   });
-  // Обработчик нажатия Enter
+
   mapPinMain.addEventListener('keydown', function (evt) {
     if (evt.key === 'Enter') {
       window.main.activateMap();

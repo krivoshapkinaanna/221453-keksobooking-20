@@ -1,5 +1,5 @@
 'use strict';
-/* (function () {
+(function () {
 // Отрисовка карточки
   var card = document.querySelector('#card').content.querySelector('.map__card');
   var renderCard = function (ad) {
@@ -40,4 +40,4 @@
   };
   renderCard(window.data.ads[1]);
 })();
-*/
+

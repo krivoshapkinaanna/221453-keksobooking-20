@@ -59,6 +59,7 @@
     return ads;
   };
   var ads = generateAds();
+
   window.data = {
     FEATURES: FEATURES,
     FULL_MAP_PIN_HEIGHT: FULL_MAP_PIN_HEIGHT,

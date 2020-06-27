@@ -20,9 +20,8 @@
     mapPins.appendChild(fragment);
   };
 
-  // Глобальная ОВ отрисовка всех меток на карте
   window.map = {
-    renderPins: renderPins,
     mapPins: mapPins,
+    renderPins: renderPins,
   };
 })();
