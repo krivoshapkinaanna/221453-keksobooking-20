@@ -1,5 +1,5 @@
 'use strict';
-(function () {
+/* (function () {
 // Отрисовка карточки
   var card = document.querySelector('#card').content.querySelector('.map__card');
   var renderCard = function (ad) {
@@ -28,7 +28,7 @@
     for (i = 0; i < ad.offer.features.length; i++) {
       var li = document.createElement('li');
       li.classList.add('popup__feature');
-      li.classList.add('popup__feature--' + window.constants.FEATURES[i]);
+      li.classList.add('popup__feature--' + window.data.FEATURES[i]);
       fragment.appendChild(li);
     }
     while (popupFeatures.firstElementChild) {
@@ -36,7 +36,8 @@
     }
     popupFeatures.appendChild(fragment);
 
-    window.pin.mapPins.after(mapCardElement);
+    window.map.mapPins.after(mapCardElement);
   };
-  renderCard(window.main.ads[1]);
+  renderCard(window.data.ads[1]);
 })();
+*/

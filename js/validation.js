@@ -13,7 +13,9 @@
       titleInput.setCustomValidity('');
     }
   };
-
+  titleInput.addEventListener('change', function () {
+    validateTitle();
+  });
   // Валидация цены
   var priceInput = document.querySelector('#price');
   var typeSelect = document.querySelector('#type');
@@ -32,6 +34,12 @@
       priceInput.placeholder = '10000';
     }
   };
+  priceInput.addEventListener('change', function () {
+    validatePrice();
+  });
+  typeSelect.addEventListener('change', function () {
+    validatePrice();
+  });
 
   // Валидация комнат-гостей
   var roomNumberInput = document.querySelector('#room_number');
@@ -52,22 +60,20 @@
       capacityInput.reportValidity();
     }
   };
-  window.validation = {
-    titleInput: titleInput,
-    priceInput: priceInput,
-    typeSelect: typeSelect,
-    roomNumberInput: roomNumberInput,
-    capacityInput: capacityInput,
-    validate: function (element) {
-      element.addEventListener('change', function () {
-        if (element === titleInput) {
-          validateTitle();
-        } else if (element === priceInput || typeSelect) {
-          validatePrice();
-        } else if (element === roomNumberInput || capacityInput) {
-          validateCapacity();
-        }
-      });
+  roomNumberInput.addEventListener('change', function () {
+    validateCapacity();
+  });
+  capacityInput.addEventListener('change', function () {
+    validateCapacity();
+  });
+  window.main.adForm.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    validateCapacity(evt);
+    validateTitle(evt);
+    validatePrice(evt);
+    if (window.main.adForm.checkValidity()) {
+      window.main.adForm.submit();
     }
-  };
+  }
+  );
 })();
