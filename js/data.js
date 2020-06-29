@@ -12,7 +12,7 @@
   var TYPES = [TYPES_TRANSCRIPTION.palace, TYPES_TRANSCRIPTION.flat, TYPES_TRANSCRIPTION.house, TYPES_TRANSCRIPTION.bungalo];
   var TIMES = ['12:00', '13:00', '14:00'];
   var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-  var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+  var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg']; */
   var FULL_MAP_PIN_HEIGHT = 84; // высотка метки с указателем
   var MAP_PIN_HEIGHT = 62;
   var MAP_PIN_WIDTH = 62;
@@ -59,7 +59,6 @@
     return ads;
   };
   var ads = generateAds();
-
   window.data = {
     FEATURES: FEATURES,
     FULL_MAP_PIN_HEIGHT: FULL_MAP_PIN_HEIGHT,
@@ -68,7 +67,7 @@
     LEFT_PIN_BORDER: LEFT_PIN_BORDER,
     RIGHT_PIN_BORDER: RIGHT_PIN_BORDER,
     map: map,
-    ads: ads,
+    ads: generateAds(),
     area: area,
   };
 })();

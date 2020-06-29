@@ -24,7 +24,7 @@
       popupPhotos.appendChild(photo);
     }
     // Удаляем лишние элементы и подставляем массив в преимущества
-    var fragment = new DocumentFragment();
+    var fragment = document.createDocumentFragment();
     for (i = 0; i < ad.offer.features.length; i++) {
       var li = document.createElement('li');
       li.classList.add('popup__feature');

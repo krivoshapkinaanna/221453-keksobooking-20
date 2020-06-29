@@ -20,7 +20,7 @@
     }
     mapFilters.removeAttribute('disabled');
     document.querySelector('#address').value = window.pin.locationX + ', ' + window.pin.activLocationY;
-    window.map.renderPins(); // почему не работает?(
+    window.map.renderPins; // почему не работает?(
   };
   window.main = {
     adForm: adForm,
