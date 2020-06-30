@@ -19,8 +19,15 @@
       fieldsets[i].removeAttribute('disabled');
     }
     mapFilters.removeAttribute('disabled');
-    document.querySelector('#address').value = window.pin.locationX + ', ' + window.pin.activLocationY;
-    window.map.renderPins; // почему не работает?(
+    var onSuccess = function (response) {
+      window.data.ads = response;
+      window.map.renderPins();
+    };
+    var onError = function (message) {
+      console.error(message);
+    };
+    window.load.load(URL, onSuccess, onError);
+    window.validation.validateCapacity();
   };
   window.main = {
     adForm: adForm,

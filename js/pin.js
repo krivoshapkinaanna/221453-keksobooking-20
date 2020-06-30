@@ -2,10 +2,9 @@
 (function () {
 
   var mapPinMain = document.querySelector('.map__pin--main');
-  var locationX = (parseInt(mapPinMain.style.left, 10) + window.data.MAP_PIN_WIDTH / 2);
   var locationY = (parseInt(mapPinMain.style.top, 10) + window.data.MAP_PIN_HEIGHT / 2);
+  var locationX = (parseInt(mapPinMain.style.left, 10) + window.data.MAP_PIN_WIDTH / 2);
   var activLocationY = (parseInt(mapPinMain.style.top, 10) + window.data.FULL_MAP_PIN_HEIGHT);
-
   mapPinMain.addEventListener('mousedown', function (evt) {
     if (evt.button === 0) {
       window.main.activateMap();
@@ -16,6 +15,8 @@
       };
       var onMouseMove = function (moveEvt) {
         moveEvt.preventDefault();
+        locationX = (parseInt(mapPinMain.style.left, 10) + window.data.MAP_PIN_WIDTH / 2);
+        activLocationY = (parseInt(mapPinMain.style.top, 10) + window.data.FULL_MAP_PIN_HEIGHT);
         var shift = {
           x: startCoords.x - moveEvt.clientX,
           y: startCoords.y - moveEvt.clientY
@@ -47,11 +48,11 @@
             mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
           }
         }
-        document.querySelector('#address').value = (parseInt(mapPinMain.style.left, 10) + window.data.MAP_PIN_WIDTH / 2) + ', ' + (parseInt(mapPinMain.style.top, 10) + window.data.FULL_MAP_PIN_HEIGHT); // Почему не определяется через заявленные переменные?
+        document.querySelector('#address').value = locationX + ', ' + activLocationY;
       };
       var onMouseUp = function (upEvt) {
         upEvt.preventDefault();
-        document.querySelector('#address').value = (parseInt(mapPinMain.style.left, 10) + window.data.MAP_PIN_WIDTH / 2) + ', ' + (parseInt(mapPinMain.style.top, 10) + window.data.FULL_MAP_PIN_HEIGHT); // Почему не определяется через заявленные переменные?
+        document.querySelector('#address').value = locationX + ', ' + activLocationY;
         document.removeEventListener('mousemove', onMouseMove);
         document.removeEventListener('mouseup', onMouseUp);
       };

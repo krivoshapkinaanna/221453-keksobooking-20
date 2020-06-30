@@ -28,7 +28,7 @@
     for (i = 0; i < ad.offer.features.length; i++) {
       var li = document.createElement('li');
       li.classList.add('popup__feature');
-      li.classList.add('popup__feature--' + window.data.FEATURES[i]);
+      li.classList.add('popup__feature--' + ad.offer.features[i]);
       fragment.appendChild(li);
     }
     while (popupFeatures.firstElementChild) {
@@ -38,6 +38,9 @@
 
     window.map.mapPins.after(mapCardElement);
   };
-  renderCard(window.data.ads[1]);
+
+  window.card = {
+    renderCard: renderCard,
+  };
 })();
 
