@@ -41,6 +41,20 @@
     validatePrice();
   });
 
+  // Валидация заезда/выезда
+  var timeInInput = document.querySelector('#timein');
+  var timeOutInput = document.querySelector('#timeout');
+  var validateTime = function (evt) {
+    timeInInput.value = evt.target.value;
+    timeOutInput.value = evt.target.value;
+  };
+  timeInInput.addEventListener('change', function (evt) {
+    validateTime(evt);
+  });
+  timeOutInput.addEventListener('change', function (evt) {
+    validateTime(evt);
+  });
+
   // Валидация комнат-гостей
   var roomNumberInput = document.querySelector('#room_number');
   var capacityInput = document.querySelector('#capacity');
@@ -71,9 +85,13 @@
     validateCapacity(evt);
     validateTitle(evt);
     validatePrice(evt);
+    validateTime(evt);
     if (window.main.adForm.checkValidity()) {
       window.main.adForm.submit();
     }
   }
   );
+  window.validation = {
+    validateCapacity: validateCapacity,
+  };
 })();
