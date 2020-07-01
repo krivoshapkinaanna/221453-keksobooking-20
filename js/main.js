@@ -1,21 +1,13 @@
 'use strict';
 (function () {
-
-  // Перевод форм в неактивный режим
-  var adForm = document.querySelector('.ad-form');
-  var fieldsets = adForm.querySelectorAll('fieldset');
-  for (var i = 0; i < fieldsets.length; i++) {
-    fieldsets[i].setAttribute('disabled', true);
-  }
-  var mapFilters = document.querySelector('.map__filters');
-  mapFilters.setAttribute('disabled', true);
-  document.querySelector('#address').value = window.pin.locationX + ', ' + window.pin.locationY;
-
+  var adForm = document.querySelector('.ad-form'); // Это потом уйдет в модуль element, уточнить как записать
+  var fieldsets = adForm.querySelectorAll('fieldset'); // Это потом уйдет в модуль element, уточнить как записать
+  var mapFilters = document.querySelector('.map__filters'); // Это потом уйдет в модуль element, уточнить как записать
   // Функция активации карты
   var activateMap = function () {
     window.data.map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
-    for (i = 0; i < fieldsets.length; i++) {
+    for (var i = 0; i < fieldsets.length; i++) {
       fieldsets[i].removeAttribute('disabled');
     }
     mapFilters.removeAttribute('disabled');
@@ -24,7 +16,7 @@
       window.map.renderPins();
     };
     var onError = function (message) {
-      console.error(message);
+      console.error(message); // Пока закрыт доступ к заданию 6.2, поэтому не прописано сообщение
     };
     window.load.load(URL, onSuccess, onError);
     window.validation.validateCapacity();
