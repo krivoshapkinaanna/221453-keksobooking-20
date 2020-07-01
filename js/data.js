@@ -1,28 +1,28 @@
 'use strict';
 
 (function () {
-  var TYPES_TRANSCRIPTION = {
-    palace: 'Дворец',
-    flat: 'Квартира',
-    house: 'Дом',
-    bungalo: 'Бунгало'
-  };
+  // var TYPES_TRANSCRIPTION = {
+  //   palace: 'Дворец',
+  //   flat: 'Квартира',
+  //   house: 'Дом',
+  //   bungalo: 'Бунгало'
+  // };
 
-  var CARDS_AMOUNT = 8;
+  // var CARDS_AMOUNT = 8;
   // var TYPES = [TYPES_TRANSCRIPTION.palace, TYPES_TRANSCRIPTION.flat, TYPES_TRANSCRIPTION.house, TYPES_TRANSCRIPTION.bungalo];
   // var TIMES = ['12:00', '13:00', '14:00'];
   // var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
   // var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+  // var HALF_MAP_PIN_WIDTH = MAP_PIN_WIDTH / 2;
   var FULL_MAP_PIN_HEIGHT = 84; // высотка метки с указателем
   var MAP_PIN_HEIGHT = 62;
   var MAP_PIN_WIDTH = 62;
-  // var HALF_MAP_PIN_WIDTH = MAP_PIN_WIDTH / 2;
   var LEFT_PIN_BORDER = -31; // (Надо ли вычислять как половину ширины пина или можно просто задать значение самому?)
   var RIGHT_PIN_BORDER = 1168;
   var map = document.querySelector('.map');
 
   // Функция создания свойств карточки объявления
-  var area = map.getBoundingClientRect();
+  // var area = map.getBoundingClientRect();
   // var generateAd = function (index) {
   //   var location = {
   //     x: area.left + (window.util.getRandom(0, area.width)),
@@ -70,7 +70,7 @@
     map: map,
     // ads: ads,
     // generateAds: generateAds,
-    area: area,
+    // area: area,
   };
 })();
 

@@ -19,25 +19,24 @@
     }
     mapPins.appendChild(fragment);
   };
-  var mapPinsClickHandler = function (evt) {
-    mapPins.addEventListener('click', function () {
-      if (evt.target &&
-          evt.target.matches('.map__pin') &&
-          !evt.target.matches('.map__pin--main')
-      ) {
-        window.card.renderCard(window.data.ads);
-      }
-    });
-  };
-  for (var i = 0; i < window.data.ads.length; i++) {
-    mapPinsClickHandler(window.data.ads[i]);
-  }
+  // var mapPinsClickHandler = function (evt) {
+  //   mapPins.addEventListener('click', function () {
+  //     if (evt.target &&
+  //         evt.target.matches('.map__pin') &&
+  //         !evt.target.matches('.map__pin--main')
+  //     ) {
+  //       window.card.renderCard(window.data.ads);
+  //     }
+  //   });
+  // };
+  // for (var i = 0; i < window.data.ads.length; i++) {
+  //   mapPinsClickHandler(window.data.ads[i]);
+  // }
 
 
-  // var mapCardPopup = document.querySelector('.map__card'); //
   // var closePopupButton = document.querySelector('.popup__close');
   // closePopupButton.addEventListener('click', function () {
-  //   mapCardPopup.classList.add('hidden');
+  //   window.card.card.classList.add('hidden');
   // });
   window.map = {
     mapPins: mapPins,

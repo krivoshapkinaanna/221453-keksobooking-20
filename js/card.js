@@ -40,6 +40,7 @@
   };
 
   window.card = {
+    card: card,
     renderCard: renderCard,
   };
 })();
