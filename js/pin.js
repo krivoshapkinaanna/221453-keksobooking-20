@@ -2,6 +2,7 @@
 (function () {
 
   var mapPinMain = document.querySelector('.map__pin--main');
+  var mapElement = document.querySelector('.map');
   var locationY = (parseInt(mapPinMain.style.top, 10) + window.data.MAP_PIN_HEIGHT / 2);
   var locationX = (parseInt(mapPinMain.style.left, 10) + window.data.MAP_PIN_WIDTH / 2);
   var activLocationY = (parseInt(mapPinMain.style.top, 10) + window.data.FULL_MAP_PIN_HEIGHT);
@@ -27,10 +28,10 @@
 
       if (mapPinMain.offsetLeft - shift.x >= window.data.LEFT_PIN_BORDER
         && mapPinMain.offsetLeft - shift.x <= window.data.RIGHT_PIN_BORDER) {
-        if (moveEvt.clientX <= window.data.map.offsetLeft
+        if (moveEvt.clientX <= mapElement.offsetLeft
           && mapPinMain.offsetLeft === window.data.LEFT_PIN_BORDER) {
           mapPinMain.style.left = window.data.LEFT_PIN_BORDER + 'px';
-        } else if (moveEvt.clientX > window.data.map.offsetLeft + window.data.map.offsetWidth
+        } else if (moveEvt.clientX > mapElement.offsetLeft + mapElement.offsetWidth
           && mapPinMain.offsetLeft === window.data.RIGHT_PIN_BORDER) {
           mapPinMain.style.left = window.data.RIGHT_PIN_BORDER + 'px';
         } else {
@@ -38,9 +39,9 @@
         }
       }
       if ((mapPinMain.offsetTop + 84) - shift.y >= 130 && (mapPinMain.offsetTop + 84) - shift.y <= 630) {
-        if (moveEvt.clientY < (window.data.map.offsetTop + 130) && mapPinMain.offsetTop === 46) {
+        if (moveEvt.clientY < (mapElement.offsetTop + 130) && mapPinMain.offsetTop === 46) {
           mapPinMain.style.top = 46 + 'px';
-        } else if (moveEvt.clientY > (window.data.map.offsetTop + 630) && mapPinMain.offsetTop === 546) {
+        } else if (moveEvt.clientY > (mapElement.offsetTop + 630) && mapPinMain.offsetTop === 546) {
           mapPinMain.style.top = 546 + 'px';
         } else {
           mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
@@ -58,12 +59,12 @@
     document.addEventListener('mouseup', onMouseUp);
   };
   var isFaded = function () {
-    return window.data.map.classList.contains('map--faded') ? true : false;
+    return mapElement.classList.contains('map--faded');
   };
   mapPinMain.addEventListener('mousedown', function (evt) {
     if (evt.button === 0
       && isFaded()) {
-      window.main.activateMap();
+      window.main.activateMap(evt);
       movePin(evt);
     } else if (evt.button === 0
       && !isFaded()) {
@@ -77,7 +78,6 @@
     }
   });
   window.pin = {
-    mapPinMain: mapPinMain,
     locationX: locationX,
     locationY: locationY,
     activLocationY: activLocationY,

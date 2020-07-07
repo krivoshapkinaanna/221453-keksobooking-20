@@ -1,45 +1,41 @@
 'use strict';
 (function () {
-  // Клонирование шаблона для метки
-  var mapPins = document.querySelector('.map__pins');
-  var pin = document.querySelector('#pin').content;
-  // Функция создания метки по шаблону
+  var mapElement = document.querySelector('.map');
+  // // Функция создания метки по шаблону
   var createPin = function (ad) {
-    var mapElement = pin.cloneNode(true);
-    mapElement.querySelector('.map__pin').style.left = (ad.location.x - window.data.MAP_PIN_WIDTH / 2) + 'px';
-    mapElement.querySelector('.map__pin').style.top = (ad.location.y - window.data.FULL_MAP_PIN_HEIGHT) + 'px';
-    mapElement.querySelector('.map__pin img').src = ad.author.avatar;
-    mapElement.querySelector('.map__pin img').alt = ad.offer.title;
-    return mapElement;
+    var pin = window.element.pinElement.cloneNode(true);
+    pin.style.left = (ad.location.x - window.data.MAP_PIN_WIDTH / 2) + 'px';
+    pin.style.top = (ad.location.y - window.data.FULL_MAP_PIN_HEIGHT) + 'px';
+    pin.querySelector('img').src = ad.author.avatar;
+    pin.querySelector('img').alt = ad.offer.title;
+    return pin;
   };
   var renderPins = function () {
-    var fragment = document.createDocumentFragment();
-    for (var i = 0; i < window.data.ads.length; i++) {
-      fragment.appendChild(createPin(window.data.ads[i]));
-    }
-    mapPins.appendChild(fragment);
+    var pinsFragment = document.createDocumentFragment();
+    window.data.ads.forEach(function (ad) {
+      pinsFragment.appendChild(createPin(ad));
+    });
+    window.element.mapPins.appendChild(pinsFragment);
   };
-  // var mapPinsClickHandler = function (evt) {
-  //   mapPins.addEventListener('click', function () {
-  //     if (evt.target &&
-  //         evt.target.matches('.map__pin') &&
-  //         !evt.target.matches('.map__pin--main')
-  //     ) {
-  //       window.card.renderCard(window.data.ads);
-  //     }
-  //   });
-  // };
-  // for (var i = 0; i < window.data.ads.length; i++) {
-  //   mapPinsClickHandler(window.data.ads[i]);
-  // }
 
+  var onClickMap = function (evt) {
+    var target = null;
+    if (evt.target.classList.contains('map__pin')) {
+      target = evt.target;
+    } else if (evt.target.parentElement.classList.contains('map__pin')) {
+      target = evt.target.parentElement;
+    }
+    var pinsCollection = document.querySelectorAll('.map__pin');
 
-  // var closePopupButton = document.querySelector('.popup__close');
-  // closePopupButton.addEventListener('click', function () {
-  //   window.card.card.classList.add('hidden');
-  // });
+    window.card.renderCard(window.data.ads[[].slice.call(pinsCollection).indexOf(target) - 1]);
+    evt.target.classList.add('map__pin--active');
+  };
+  mapElement.addEventListener('click', onClickMap);
+  // window.element.mapElement.removeEventListener('click', window.map.onClickMap);
+
   window.map = {
-    mapPins: mapPins,
     renderPins: renderPins,
+    onClickMap: onClickMap,
   };
 })();
+

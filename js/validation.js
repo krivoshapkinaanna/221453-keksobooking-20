@@ -4,11 +4,11 @@
   var titleInput = document.querySelector('#title');
   var validateTitle = function () {
     if (titleInput.validity.tooShort) {
-      titleInput.setCustomValidity('Заголовок должен состоять минимум из 30 символов');
+      titleInput.setCustomValidity(window.data.VALIDATE_TITLE_MESSAGE.TOO_SHORT);
     } else if (titleInput.validity.tooLong) {
-      titleInput.setCustomValidity('Заголовок не должен превышать 100 символов');
+      titleInput.setCustomValidity(window.data.VALIDATE_TITLE_MESSAGE.TOO_LONG);
     } else if (titleInput.validity.valueMissing) {
-      titleInput.setCustomValidity('Обязательное поле');
+      titleInput.setCustomValidity(window.data.VALIDATE_TITLE_MESSAGE.VALUE_MISSING);
     } else {
       titleInput.setCustomValidity('');
     }
@@ -58,7 +58,8 @@
   // Валидация комнат-гостей
   var roomNumberInput = document.querySelector('#room_number');
   var capacityInput = document.querySelector('#capacity');
-  var validateCapacity = function () {
+  var validateCapacity = function (evt) {
+    evt.preventDefault();
     roomNumberInput.setCustomValidity('');
     capacityInput.setCustomValidity('');
     var rooms = roomNumberInput.value;
