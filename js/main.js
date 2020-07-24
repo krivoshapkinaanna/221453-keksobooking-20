@@ -1,29 +1,43 @@
 'use strict';
 (function () {
-  var adForm = document.querySelector('.ad-form'); // Это потом уйдет в модуль element, уточнить как записать
-  var fieldsets = adForm.querySelectorAll('fieldset'); // Это потом уйдет в модуль element, уточнить как записать
-  var mapFilters = document.querySelector('.map__filters'); // Это потом уйдет в модуль element, уточнить как записать
 
-  // Функция активации карты
+  var mapPinMain = document.querySelector('.map__pin--main');
+  var mapElement = document.querySelector('.map');
+
   var activateMap = function (evt) {
     evt.stopPropagation();
-    window.element.mapElement.classList.remove('map--faded');
-    adForm.classList.remove('ad-form--disabled');
-    for (var i = 0; i < fieldsets.length; i++) {
-      fieldsets[i].removeAttribute('disabled');
+    if (mapElement.classList.contains('map--faded')) {
+      window.backend.load(onSuccess, onError);
+      window.form.enableAdForm();
+      window.form.preValidateForm();
     }
-    mapFilters.removeAttribute('disabled');
-    window.backend.load(function (response) {
-      window.data.ads = response;
-      window.map.renderPins();
-    }, function (message) {
-      console.error(message); // Это я еще не успела()
-    }
-    );
-    window.validation.validateCapacity(evt);
   };
+  var onSuccess = function (response) {
+    mapElement.classList.remove('map--faded');
+    window.data.filtered = window.data.ads = response;
+    window.pin.renderPins(window.data.filtered.slice(0, 5));
+    window.form.enableMapFilters();
+  };
+
+  var onError = function (error) {
+    window.dialog.openErrorDialog(error);
+  };
+
+  mapPinMain.addEventListener('mousedown', function (evt) {
+    if (evt.button === 0) {
+      activateMap(evt);
+      window.move.onMoveListener(evt);
+    }
+  });
+  mapPinMain.addEventListener('keydown', function (evt) {
+    if (evt.key === 'Enter') {
+      activateMap(evt);
+    }
+  });
+  window.form.disableForms();
+  window.form.setAddress(mapPinMain.offsetLeft, mapPinMain.offsetTop);
   window.main = {
-    adForm: adForm,
-    activateMap: activateMap,
+    mapElement: mapElement,
+    mapPinMain: mapPinMain
   };
 })();
