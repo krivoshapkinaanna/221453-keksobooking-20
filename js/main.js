@@ -1,7 +1,8 @@
 'use strict';
 (function () {
 
-  var mapPinMain = document.querySelector('.map__pin--main');
+  var MOUSE_LEFT_BUTTON = 0;
+  var mapPinMainElement = document.querySelector('.map__pin--main');
   var mapElement = document.querySelector('.map');
 
   var activateMap = function (evt) {
@@ -14,8 +15,12 @@
   };
   var onSuccess = function (response) {
     mapElement.classList.remove('map--faded');
-    window.data.filtered = window.data.ads = response;
-    window.pin.renderPins(window.data.filtered.slice(0, 5));
+    window.data.pins = response;
+    window.data.filtered = window.data.pins.filter(function (ad) {
+      return ad.hasOwnProperty('offer');
+    });
+    window.pin.renderPins(window.data.filtered);
+    window.form.setAddress(mapPinMainElement.offsetLeft, mapPinMainElement.offsetTop);
     window.form.enableMapFilters();
   };
 
@@ -23,21 +28,17 @@
     window.dialog.openErrorDialog(error);
   };
 
-  mapPinMain.addEventListener('mousedown', function (evt) {
-    if (evt.button === 0) {
+  mapPinMainElement.addEventListener('mousedown', function (evt) {
+    if (evt.button === MOUSE_LEFT_BUTTON) {
       activateMap(evt);
       window.move.onMoveListener(evt);
     }
   });
-  mapPinMain.addEventListener('keydown', function (evt) {
+  mapPinMainElement.addEventListener('keydown', function (evt) {
     if (evt.key === 'Enter') {
       activateMap(evt);
     }
   });
   window.form.disableForms();
-  window.form.setAddress(mapPinMain.offsetLeft, mapPinMain.offsetTop);
-  window.main = {
-    mapElement: mapElement,
-    mapPinMain: mapPinMain
-  };
+  window.form.setAddress(mapPinMainElement.offsetLeft, mapPinMainElement.offsetTop);
 })();

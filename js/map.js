@@ -21,4 +21,7 @@
   };
 
   mapElement.addEventListener('click', onClickMap);
+  window.map = {
+    mapElement: mapElement,
+  };
 })();

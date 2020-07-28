@@ -3,7 +3,7 @@
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
   var mapCardElement = cardTemplate.cloneNode(true);
   var closeCardButton = mapCardElement.querySelector('.popup__close');
-  var mapPins = document.querySelector('.map__pins');
+  var mapPinsElement = document.querySelector('.map__pins');
   var type = {
     bungalo: 'бунгало',
     flat: 'комната',
@@ -44,10 +44,14 @@
       photosElement.firstElementChild.remove();
     }
     photosElement.appendChild(photosList);
+    featuresElement.style.display = ad.offer.features.length > 0 ? 'flex' : 'none';
+    photosElement.style.display = ad.offer.photos.length > 0 ? 'flex' : 'none';
 
-    mapPins.after(mapCardElement);
+    mapPinsElement.after(mapCardElement);
 
-    closeCardButton.addEventListener('click', closeCard);
+    closeCardButton.addEventListener('click', function () {
+      closeCard();
+    });
     document.addEventListener('keydown', onCardEscPress);
     window.pin.removeActive();
   };
@@ -60,7 +64,6 @@
   var closeCard = function () {
     mapCardElement.remove();
     window.pin.removeActive();
-    closeCardButton.removeEventListener('click', closeCard);
     document.removeEventListener('keydown', onCardEscPress);
   };
 

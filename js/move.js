@@ -1,12 +1,13 @@
 'use strict';
 (function () {
-  var mapElement = document.querySelector('.map');
-  var MAP_OFFSET_LEFT = ((mapElement.clientLeft) - window.pin.mapPinWidth / 2);
-  var MAP_OFFSET_RIGHT = ((mapElement.clientWidth) - window.pin.mapPinWidth / 2);
-  var MAP_OFFSET_TOP = 130 - window.pin.fullMapPinHeight;
-  var MAP_OFFSET_BOTTOM = 630 - window.pin.fullMapPinHeight;
+  var MAP_OFFSET_LEFT = ((window.map.mapElement.clientLeft) - window.pin.mapPinWidth / 2);
+  var MAP_OFFSET_RIGHT = ((window.map.mapElement.clientWidth) - window.pin.mapPinWidth / 2);
+  var MIN_Y_COORD = 130;
+  var MAX_Y_COORD = 630;
+  var MAP_OFFSET_TOP = MIN_Y_COORD - window.pin.fullMapPinHeight;
+  var MAP_OFFSET_BOTTOM = MAX_Y_COORD - window.pin.fullMapPinHeight;
+  var mapPinMainElement = document.querySelector('.map__pin--main');
 
-  var mapPinMain = document.querySelector('.map__pin--main');
   var onMoveListener = function (evt) {
     var startCoords = {
       x: evt.clientX,
@@ -23,19 +24,19 @@
         x: moveEvt.clientX,
         y: moveEvt.clientY
       };
-      if (mapPinMain.offsetLeft - shift.x >= MAP_OFFSET_LEFT && mapPinMain.offsetLeft - shift.x <= MAP_OFFSET_RIGHT) {
-        mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
+      if (mapPinMainElement.offsetLeft - shift.x >= MAP_OFFSET_LEFT && mapPinMainElement.offsetLeft - shift.x <= MAP_OFFSET_RIGHT) {
+        mapPinMainElement.style.left = (mapPinMainElement.offsetLeft - shift.x) + 'px';
       }
 
-      if (mapPinMain.offsetTop - shift.y >= MAP_OFFSET_TOP && mapPinMain.offsetTop - shift.y <= MAP_OFFSET_BOTTOM) {
-        mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
+      if (mapPinMainElement.offsetTop - shift.y >= MAP_OFFSET_TOP && mapPinMainElement.offsetTop - shift.y <= MAP_OFFSET_BOTTOM) {
+        mapPinMainElement.style.top = (mapPinMainElement.offsetTop - shift.y) + 'px';
       }
 
-      window.form.setAddress(mapPinMain.offsetLeft, mapPinMain.offsetTop);
+      window.form.setAddress(mapPinMainElement.offsetLeft, mapPinMainElement.offsetTop);
     };
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
-      window.form.setAddress(mapPinMain.offsetLeft, mapPinMain.offsetTop);
+      window.form.setAddress(mapPinMainElement.offsetLeft, mapPinMainElement.offsetTop);
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
     };

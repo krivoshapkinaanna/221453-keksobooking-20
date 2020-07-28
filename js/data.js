@@ -2,7 +2,7 @@
 
 (function () {
   window.data = {
-    ads: [],
+    pins: [],
     filtered: [],
   };
 })();

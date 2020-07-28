@@ -13,43 +13,49 @@
   var openErrorDialog = function (error) {
     errorMessage.querySelector('.error__message').textContent = error;
     mainContainer.appendChild(errorMessage);
-    errorMessageButton.addEventListener('click', closeErrorDialog);
-    document.addEventListener('keydown', closeErrorDialogByEsc);
+    errorMessage.addEventListener('click', onErrorDialogClick);
+    errorMessageButton.addEventListener('mousedown', function () {
+      closeErrorDialog();
+    });
+    document.addEventListener('keydown', onErrorDialogEscPress);
   };
 
   var closeErrorDialog = function () {
     errorMessage.remove();
-    errorMessage.removeEventListener('click', closeErrorDialogByClick);
-    errorMessageButton.removeEventListener('click', closeErrorDialog);
-    document.removeEventListener('keydown', closeErrorDialogByEsc);
+    document.removeEventListener('keydown', onErrorDialogEscPress);
   };
 
-  var closeErrorDialogByEsc = function (evt) {
+  var onErrorDialogEscPress = function (evt) {
     if (evt.key === 'Escape') {
       closeErrorDialog(evt);
     }
   };
-  var closeErrorDialogByClick = function (evt) {
+  var onErrorDialogClick = function (evt) {
     if (evt.target.classList.contains('error')) {
       closeErrorDialog(evt);
     }
   };
   var openSuccessDialog = function () {
     mainContainer.appendChild(successMessage);
-    document.addEventListener('keydown', closeSuccessDialogByEsc);
+    document.addEventListener('keydown', onSuccessDialogEscPress);
+    successMessage.addEventListener('click', onSucessDialogClick);
   };
 
   var closeSuccessDialog = function () {
     successMessage.remove();
-    document.removeEventListener('keydown', closeSuccessDialogByEsc);
+    document.removeEventListener('keydown', onSuccessDialogEscPress);
   };
 
-  var closeSuccessDialogByEsc = function (e) {
+  var onSuccessDialogEscPress = function (e) {
     if (e.key === 'Escape') {
       closeSuccessDialog(e);
     }
   };
-
+  var onSucessDialogClick = function (e) {
+    if (e.target.classList.contains('success')) {
+      closeSuccessDialog(e);
+    }
+  };
 
   window.dialog = {
     openErrorDialog: openErrorDialog,

@@ -10,9 +10,9 @@
   var MAIN_PIN_POS_Y = 375;
   var MAX_PINS_AMOUNT = 5;
   var MIN_PINS_AMOUNT = 0;
+  var mapPinsElement = document.querySelector('.map__pins');
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
-  var mapPins = document.querySelector('.map__pins');
-  var mapPinMain = document.querySelector('.map__pin--main');
+  var mapPinMainElement = document.querySelector('.map__pin--main');
 
   var createPin = function (ad) {
     var pinElement = pinTemplate.cloneNode(true);
@@ -27,7 +27,7 @@
     data.slice(MIN_PINS_AMOUNT, MAX_PINS_AMOUNT).forEach(function (ad) {
       pinsFragment.appendChild(createPin(ad));
     });
-    mapPins.appendChild(pinsFragment);
+    mapPinsElement.appendChild(pinsFragment);
   };
   var removePins = function () {
     var pinsCollection = document.querySelectorAll('.map__pin:not(.map__pin--main)');
@@ -42,8 +42,8 @@
     });
   };
   var setDeactiveMapPinMain = function () {
-    mapPinMain.style.left = MAIN_PIN_POS_X + 'px';
-    mapPinMain.style.top = MAIN_PIN_POS_Y + 'px';
+    mapPinMainElement.style.left = MAIN_PIN_POS_X + 'px';
+    mapPinMainElement.style.top = MAIN_PIN_POS_Y + 'px';
     window.form.setAddress(MAIN_PIN_POS_X, MAIN_PIN_POS_Y);
   };
   window.pin = {
